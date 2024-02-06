@@ -4,9 +4,12 @@ import { useState } from "react";
 import EntryModal from "./EntryModal.js";
 import DisplayEntries from "./components/DisplayEntries.js";
 
+function getState() {
+  return ["hello", "personal journal"];
+}
 export default function App() {
   const [modalVisible, setModalVisible] = useState(false);
-  const entries = ["hello", "personal journal"];
+  const [entries, setEntries] = useState(getState);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -15,6 +18,7 @@ export default function App() {
       <EntryModal
         modalVisible={modalVisible}
         setModalVisible={(state) => setModalVisible(state)}
+        setEntries={(newEntry) => setEntries(newEntry)}
       />
 
       <TouchableOpacity

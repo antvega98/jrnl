@@ -9,23 +9,33 @@ import {
 
 import { useState } from "react";
 
-export default function EntryModal({ modalVisible, setModalVisible }) {
+export default function EntryModal({
+  modalVisible,
+  setModalVisible,
+  setEntries,
+}) {
   const [text, setText] = useState("");
+
+  function addEntry(newEntry) {
+    setEntries((prev) => {
+      if (newEntry.trim().length === 0) return prev;
+      return [...prev, newEntry.trim()];
+    });
+    setText("");
+    setModalVisible(false);
+  }
 
   return (
     <Modal animationType="slide" visible={modalVisible}>
       <View style={styles.container}>
         <TextInput
           onChangeText={setText}
-          placeholder="placeholder"
+          placeholder="Add an entry"
           style={styles.textField}
           multiline
         />
-        <TouchableOpacity
-          onPress={() => setModalVisible(false)}
-          style={styles.button}
-        >
-          <Text style={styles.text}>Close</Text>
+        <TouchableOpacity onPress={() => addEntry(text)} style={styles.button}>
+          <Text style={styles.text}>Add</Text>
         </TouchableOpacity>
       </View>
     </Modal>
