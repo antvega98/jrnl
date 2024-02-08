@@ -7,19 +7,23 @@ import {
   TextInput,
 } from "react-native";
 
+import { setItem } from "./database/database.js";
+
 import { useState } from "react";
 
 export default function EntryModal({
   modalVisible,
   setModalVisible,
-  setEntries,
+  setNewEntry,
 }) {
   const [text, setText] = useState("");
 
-  function addEntry(newEntry) {
-    setEntries((prev) => {
-      if (newEntry.trim().length === 0) return prev;
-      return [...prev, newEntry.trim()];
+  function addEntry(text) {
+    const entry = text.trim();
+    setNewEntry((prev) => {
+      if (entry.length === 0) return prev;
+      setItem(entry);
+      return entry;
     });
     setText("");
     setModalVisible(false);

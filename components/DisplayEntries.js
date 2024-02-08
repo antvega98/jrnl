@@ -6,8 +6,8 @@ export default function DisplayEntries({ entries }) {
   return (
     <ScrollView>
       {entries ? (
-        entries.map((text, index) => {
-          return <EntryDisplayComponent key={index} text={text} />;
+        entries.map((obj, index) => {
+          return <EntryDisplayComponent key={index} text={obj.value} />;
         })
       ) : (
         <Text>No entries.</Text>

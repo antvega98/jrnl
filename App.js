@@ -3,21 +3,27 @@ import { useState, useEffect } from "react";
 
 import EntryModal from "./EntryModal.js";
 import DisplayEntries from "./components/DisplayEntries.js";
-import Database from "./Database.js";
 
-const db = new Database();
-
-function getState() {
-  return ["hello", "personal journal", "denise"];
-}
+import { createTable, getItems } from "./database/database.js";
 
 export default function App() {
   const [modalVisible, setModalVisible] = useState(false);
-  const [entries, setEntries] = useState(getState);
+  const [entries, setEntries] = useState(null);
+  const [newEntry, setNewEntry] = useState(null);
 
   useEffect(() => {
-    db.setItem("Hello, this is my third entry");
-  }, []);
+    (async () => {
+      try {
+        await createTable();
+        const data = await getItems();
+        if (data != null && data.length !== 0) {
+          setEntries(data);
+        }
+      } catch (e) {
+        console.log("Unable to retrieve entries.");
+      }
+    })();
+  }, [newEntry]);
 
   return (
     <SafeAreaView style={styles.container}>
@@ -26,7 +32,7 @@ export default function App() {
       <EntryModal
         modalVisible={modalVisible}
         setModalVisible={(state) => setModalVisible(state)}
-        setEntries={(newEntry) => setEntries(newEntry)}
+        setNewEntry={(newEntry) => setNewEntry(newEntry)}
       />
 
       <TouchableOpacity
