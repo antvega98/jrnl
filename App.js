@@ -1,15 +1,23 @@
 import { StyleSheet, Text, TouchableOpacity, SafeAreaView } from "react-native";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 import EntryModal from "./EntryModal.js";
 import DisplayEntries from "./components/DisplayEntries.js";
+import Database from "./Database.js";
+
+const db = new Database();
 
 function getState() {
-  return ["hello", "personal journal"];
+  return ["hello", "personal journal", "denise"];
 }
+
 export default function App() {
   const [modalVisible, setModalVisible] = useState(false);
   const [entries, setEntries] = useState(getState);
+
+  useEffect(() => {
+    db.setItem("Hello, this is my third entry");
+  }, []);
 
   return (
     <SafeAreaView style={styles.container}>
